@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import customerRoutes from './app/customers/routes/route.js';
 import productRoutes from './app/products/routes/route.js';
 import inoviceRoutes from './app/invoice/routes/route.js';
+import userRoutes from './app/users/routes/route.js';
+import authRotes from './app/auth/rotues/route.js'; 
 
 
 dotenv.config();
@@ -17,7 +19,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 databaseConnect();
-
 
 app.use(cors(
   {
@@ -33,6 +34,8 @@ app.get('/', (req, res) => {
 app.use('/api/customer', customerRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/invoice', inoviceRoutes);
+app.use('/api/user', userRoutes);
+app.use('/', authRotes);
 
 
 app.listen(PORT, () => {
