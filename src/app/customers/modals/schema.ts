@@ -42,6 +42,10 @@ const customerSchema = new mongoose.Schema({
     },
     amountPending : {
         type: Number,
+    },
+    user: {
+        type: String,
+        required: true
     }
 })
 

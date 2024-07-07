@@ -21,9 +21,9 @@ const getCustomerByIDServices = async (id : String) => {
     }  
 }
 
-const getAllCustomerServices = async () => {
+const getAllCustomerServices = async (userId : string) => {
     try {
-        return await Customer.find();
+        return await Customer.find({user: userId});
     }catch(error){
         throw error;
     }

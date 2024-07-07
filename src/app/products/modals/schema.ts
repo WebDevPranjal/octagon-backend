@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const batchSchema = new mongoose.Schema({
-    batch: {
+    name: {
         type: String,
         required: true
     },
@@ -44,13 +44,25 @@ const productSchema = new mongoose.Schema({
         type: Number
     },
     saleRate: {
-        type: Number
+        type: [Number]
     },
     companyName: {
         type: String,
         required: true
     },
-    batches: [batchSchema]
+    batches: [batchSchema],
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now()
+    },
+    user: {
+        type: String,
+        required: true
+    }
 });
 
 const Product = mongoose.model('Product', productSchema);

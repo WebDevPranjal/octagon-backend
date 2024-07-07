@@ -25,9 +25,9 @@ const getProductByIDService = async (id: string) => {
     }
 }
 
-const getAllProductsService = async () => {
+const getAllProductsService = async (userId: string) => {
     try {
-        return await Product.find({});
+        return await Product.find({user: userId});
     }catch(error){
         throw error;
     }
@@ -39,7 +39,8 @@ const updateProductService = (id: string, product: ProductType) => {
         if(!existingProduct){
             return -1;
         }
-        const updatedProduct = Product.findByIdAndUpdate(id, product, {new: true});
+        const data = { ...product, updatedAt: new Date()}
+        const updatedProduct = Product.findByIdAndUpdate(id, data, {new: true});
         return updatedProduct;
     }catch(error){
         throw error;
@@ -61,13 +62,21 @@ const deleteProductService = (id: string) => {
 
 const createBatchService = async (id: string, batch: BatchType) => {
     try{
-        const existingProduct = await Product.findById(id);
+        //console.log(id);
+        const existingProduct = await Product.findOne({ _id: id });
+        //console.log(existingProduct);
         if(!existingProduct){
             return new Error('Product not found');
         }
+
+        // console.log(existingProduct);
+        
         existingProduct.batches.push(batch);
         const updatedProduct = await existingProduct.save();
-        return updatedProduct;
+        // console.log(updatedProduct);
+        const batchId = updatedProduct.batches[updatedProduct.batches.length - 1]._id;
+        // console.log(updatedProduct);
+        return { updatedProduct, batchId };
     }catch(error){
         throw error;
     }

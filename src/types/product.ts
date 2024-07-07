@@ -1,5 +1,8 @@
+import { ObjectId } from "mongoose";
+
 export type BatchType = {
-    batch: string;
+    _id?: ObjectId;
+    name: string;
     quantity: number;
     expireDate: Date;
     packaging: string;
@@ -7,12 +10,16 @@ export type BatchType = {
 };
 
 export type ProductType = {
+    _id: ObjectId;
     name: string;
     hsn: string;
     gst: number;
     gstCategory: string;
-    saleRate: number;
+    saleRate: number[];
     purchaseRate: number;
     companyName: string;
     batches: BatchType[];
+    createdAt: Date;
+    updatedAt: Date;
+    user: ObjectId;
 };

@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { createInvoiceService, getAllInvoicesService, getInvoiceByIdService, deleteInvoiceService } from "../services/service.js";
+import { createInvoiceService, getAllInvoicesService, getInvoiceByIdService, deleteInvoiceService, updateInvoiceService } from "../services/service.js";
 
 const createInvoice = async (req: Request, res: Response) => {
     try{
         const { data } = req.body;
-        const invoice = createInvoiceService(data);
+        const invoice = await createInvoiceService(data);
         res.status(201).json({ msg: "Invoice created", data: invoice });
     }catch(error){
         console.log(error);
@@ -14,7 +14,9 @@ const createInvoice = async (req: Request, res: Response) => {
 
 const getAllInvoices = async (req: Request, res: Response) => {
     try{
-        const invoices = getAllInvoicesService();
+        const userId = req.params.id;
+        // console.log(userId);
+        const invoices = await getAllInvoicesService(userId);
         res.status(200).json({ data: invoices });
     }catch(error){
         console.log(error);
@@ -34,12 +36,21 @@ const getInvoiceById = async (req: Request, res: Response) => {
 }
 
 const updateInvoice = async (req: Request, res: Response) => {
+    try{
+        const { id } = req.params;
+        const { data } = req.body;
+        const invoice = updateInvoiceService(id, data);
+        res.status(200).json({ msg: "Invoice updated", data: invoice });
+    }catch(error){
+        console.log(error);
+        res.status(400).json({ msg: "Error while updating invoice"});
+    }
 }
 
 const deleteInvoice = async (req: Request, res: Response) => {
     try{
         const { id } = req.params;
-        const invoice = deleteInvoiceService(id);
+        const invoice = await deleteInvoiceService(id);
         res.status(200).json({ msg: "Invoice deleted", data: invoice });
     }catch(error){
         console.log(error);
@@ -47,10 +58,11 @@ const deleteInvoice = async (req: Request, res: Response) => {
     }
 }
 
+
 export {
     createInvoice,
     getAllInvoices,
     getInvoiceById,
     updateInvoice,
-    deleteInvoice
+    deleteInvoice,
 }

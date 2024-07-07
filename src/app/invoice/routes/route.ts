@@ -3,10 +3,10 @@ import { createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInv
 
 const router = Router();
 
-router.get("/get", getAllInvoices);
+router.get("/get/user/:id", getAllInvoices);
 router.get("/get/:id", getInvoiceById);
 router.post("/create", createInvoice);
-router.put("/update", updateInvoice);
+router.put("/update/:id", updateInvoice);
 router.delete("/delete/:id", deleteInvoice);
 
 export default router;

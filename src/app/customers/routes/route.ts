@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/create', createCustomer);
 router.get('/get/:id', getCustomerByID);
-router.get('/get', getAllCustomer);
+router.get('/get/user/:id', getAllCustomer);
 router.put('/update/:id', updateCustomer);
 router.delete('/delete/:id', deleteCustomer);
 

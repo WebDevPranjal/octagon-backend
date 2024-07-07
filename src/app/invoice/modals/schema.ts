@@ -24,6 +24,7 @@ const InvoiceItems = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
+    required: true
   }
 })
 
@@ -40,6 +41,7 @@ const InvoiceSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
+    required: true
   },
   type: {
     type: String,
@@ -53,6 +55,10 @@ const InvoiceSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now()
+  },
+  user: {
+    type: String,
+    required: true
   }
 });
 

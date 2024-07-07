@@ -6,4 +6,5 @@ export type customerType = {
     dlNumber: string;
     gstIN: string;
     category: string;
+    userId: string;
 }

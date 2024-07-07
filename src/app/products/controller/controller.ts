@@ -11,6 +11,8 @@ import {
 const createProduct = async (req: Request, res: Response) => {
     try{
         const { data } = req.body;
+        console.log(data);
+
         const result = await createProductService(data);
       //  console.log(result);
         res.status(200).send(result);
@@ -37,7 +39,8 @@ const getProductByID = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
     try{
-        const result = await getAllProductsService();
+        const userId = req.params.id;
+        const result = await getAllProductsService(userId);
         res.status(200).send(result);
     }catch(error : any){
         console.log(error.message);

@@ -10,6 +10,7 @@ import {
 const createCustomer = async (req: Request, res: Response) => {
     try {
         const { data } = req.body;
+        console.log(data);
         const result = await createCustomerServices(data);
         res.status(201).send(result);
     } catch (error: any) {
@@ -35,7 +36,8 @@ const getCustomerByID = async (req: Request, res: Response) => {
 
 const getAllCustomer = async (req: Request, res: Response) => {
     try {
-        const result = await getAllCustomerServices();
+        const userId = req.params.id;
+        const result = await getAllCustomerServices(userId);
         res.status(200).send(result);
     } catch (error: any) {
         console.log(error.message);
