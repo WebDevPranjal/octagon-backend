@@ -55,11 +55,19 @@ const updateStockOnSaleOnDelete = async (
     throw new Error("Product not found");
   }
 
+  let batch: any = {};
+
   product.batches.find((item) => {
     if (item._id && item._id.equals(String(batchId))) {
-      item.quantity = item.quantity + Number(quantity) + Number(free);
+      batch = item;
     }
   });
+
+  if (!batch) {
+    throw new Error("Batch not found");
+  }
+
+  batch.quantity = batch.quantity + Number(quantity) + Number(free);
 
   return await product.save();
 };
@@ -76,13 +84,21 @@ const updateStockOnPurchaseOnDelete = async (
     throw new Error("Product not found");
   }
 
+  let batch: any = {};
+
   product.batches.find((item) => {
     if (item._id && item._id.equals(String(batchId))) {
-      item.quantity = item.quantity - Number(quantity) - Number(free);
+      batch = item;
     }
   });
 
-  console.log('hello');
+  if (!batch) {
+    throw new Error("Batch not found");
+  }
+
+  batch.quantity = batch.quantity - Number(quantity) - Number(free);
+
+  console.log("hello");
   return await product.save();
 };
 

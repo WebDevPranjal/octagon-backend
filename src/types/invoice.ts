@@ -10,10 +10,10 @@ export type InvoiceItemsType = {
   mrp: number;
   free: number;
   quantity: number;
-  purchaseRate?: number;
+  rate?: number;
   saleRate?: number;
   productId: ObjectId;
-}
+};
 
 export type InvoiceType = {
   invoiceNumber: string;
@@ -22,4 +22,4 @@ export type InvoiceType = {
   type: string;
   items: InvoiceItemsType[];
   user: string;
-}
+};

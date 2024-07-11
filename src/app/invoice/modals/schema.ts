@@ -7,27 +7,26 @@ const InvoiceItems = new mongoose.Schema({
   },
   discount: {
     type: Number,
-    required: true
+    required: true,
   },
   free: {
     type: Number,
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
-    required: true
+    required: true,
   },
-  invoicerate: {
+  rate: {
     type: Number,
-    required: true
+    required: true,
   },
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-    required: true
-  }
-})
-
+    required: true,
+  },
+});
 
 const InvoiceSchema = new mongoose.Schema({
   invoiceNumber: {
@@ -41,7 +40,7 @@ const InvoiceSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
-    required: true
+    required: true,
   },
   type: {
     type: String,
@@ -50,16 +49,16 @@ const InvoiceSchema = new mongoose.Schema({
   items: [InvoiceItems],
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   updatedAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   user: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 export default mongoose.model("Invoice", InvoiceSchema);
