@@ -11,56 +11,84 @@ import Product from "../../products/modals/schema.js";
 import { BatchType } from "../../../types/product.js";
 import { createBatchService } from "../../products/services/service.js";
 import mongoose from "mongoose";
+import logger from "../../utils/logger.js";
 
 const createInvoiceService = async (invoice: InvoiceType) => {
-  const { type } = invoice;
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  // for modifying items data in invoice
-  let products = [];
+  try {
+    const { type } = invoice;
+    let products = [];
 
-  for (const item of invoice.items) {
-    const { productId, batchId, free, quantity } = item;
+    for (const item of invoice.items) {
+      const { productId, batchId, free, quantity } = item;
 
-    if (type === "sale" && batchId) {
-      updateStockOnSale(productId, batchId, free, quantity);
-    } else if (type === "purchase") {
-      const batchData = {
-        name: item.batch,
-        quantity: 0,
-        expireDate: item.expireDate,
-        packaging: item.packaging,
-        mrp: item.mrp,
-      };
+      if (type === "sale" && batchId) {
+        updateStockOnSale(productId, batchId, free, quantity, session);
+      } else if (type === "purchase") {
+        const batchData = {
+          name: item.batch,
+          quantity: 0,
+          expireDate: item.expireDate,
+          packaging: item.packaging,
+          mrp: item.mrp,
+        };
 
-      try {
-        const res: any = await createBatchService(String(productId), batchData);
-        if (res) {
-          const batchId = res.batchId;
-          await updateStockOnPurchase(productId, batchId, free, quantity);
-          const productData = {
-            productId,
-            batchId: batchId,
-            free,
-            quantity,
-            rate: item.rate,
-            discount: item.discount,
-          };
-          products.push(productData);
+        try {
+          const res: any = await createBatchService(
+            String(productId),
+            batchData
+          );
+          if (res) {
+            const batchId = res.batchId;
+            await updateStockOnPurchase(
+              productId,
+              batchId,
+              free,
+              quantity,
+              session
+            );
+            const productData = {
+              productId,
+              batchId: batchId,
+              free,
+              quantity,
+              rate: item.rate,
+              discount: item.discount,
+            };
+            products.push(productData);
+          }
+        } catch (error) {
+          throw new Error("Error while creating batch");
         }
-      } catch (error) {
-        throw new Error("Error while creating batch");
       }
     }
-  }
 
-  return await Invoice.create({
-    items: products,
-    invoiceNumber: invoice.invoiceNumber,
-    invoiceDate: invoice.invoiceDate,
-    customerId: invoice.customerId,
-    type: invoice.type,
-    user: invoice.user,
-  });
+    const newInvoice = await Invoice.create(
+      [
+        {
+          items: products,
+          invoiceNumber: invoice.invoiceNumber,
+          invoiceDate: invoice.invoiceDate,
+          customerId: invoice.customerId,
+          type: invoice.type,
+          user: invoice.user,
+        },
+      ],
+      { session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return newInvoice[0];
+  } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
+    logger.error(`Error creating invoice: ${error.message}`);
+    throw new Error("Error while creating invoice");
+  }
 };
 
 const getAllInvoicesService = async (userId: string) => {
@@ -193,115 +221,153 @@ const getInvoiceByIdService = async (id: string) => {
 };
 
 const updateInvoiceService = async (id: string, data: InvoiceType) => {
-  const invoice = await Invoice.findById(id);
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (!invoice) {
-    throw new Error("Invoice not found");
-  }
+  try {
+    const invoice = await Invoice.findById(id).session(session);
 
-  const { type } = invoice;
-
-  for (const item of invoice.items) {
-    const { productId, batchId, free, quantity } = item;
-
-    if (type === "sale") {
-      await updateStockOnSaleOnDelete(
-        String(productId),
-        String(batchId),
-        free,
-        quantity
-      );
-    } else if (type === "purchase") {
-      await updateStockOnPurchaseOnDelete(
-        String(productId),
-        String(batchId),
-        free,
-        quantity
-      );
+    if (!invoice) {
+      throw new Error("Invoice not found");
     }
-  }
 
-  for (let item of data.items) {
-    const { productId, batchId, free, quantity } = item;
+    const { type } = invoice;
 
-    let products = [];
+    for (const item of invoice.items) {
+      const { productId, batchId, free, quantity } = item;
 
-    if (type === "sale" && batchId) {
-      await updateStockOnSale(productId, batchId, free, quantity);
-    } else if (type === "purchase") {
-      const batchData = {
-        name: item.batch,
-        quantity: 0,
-        expireDate: item.expireDate,
-        packaging: item.packaging,
-        mrp: item.mrp,
-      };
-
-      try {
-        // console.log("productId", productId);
-        // console.log("batchData", batchData);
-        const res: any = await createBatchService(String(productId), batchData);
-        // console.log("res", res);
-        if (res) {
-          const batchId = res.batchId;
-          await updateStockOnPurchase(productId, batchId, free, quantity);
-          const productData = {
-            productId,
-            batchId: batchId,
-            free,
-            quantity,
-            invoicerate: item.rate,
-            discount: item.discount,
-          };
-          products.push(productData);
-          item.batchId = batchId;
-        }
-      } catch (error) {
-        throw new Error("Error while creating batch");
+      if (type === "sale") {
+        await updateStockOnSaleOnDelete(
+          String(productId),
+          String(batchId),
+          free,
+          quantity,
+          session
+        );
+      } else if (type === "purchase") {
+        await updateStockOnPurchaseOnDelete(
+          String(productId),
+          String(batchId),
+          free,
+          quantity,
+          session
+        );
       }
     }
+
+    for (let item of data.items) {
+      const { productId, batchId, free, quantity } = item;
+
+      let products = [];
+
+      if (type === "sale" && batchId) {
+        await updateStockOnSale(productId, batchId, free, quantity, session);
+      } else if (type === "purchase") {
+        const batchData = {
+          name: item.batch,
+          quantity: 0,
+          expireDate: item.expireDate,
+          packaging: item.packaging,
+          mrp: item.mrp,
+        };
+
+        try {
+          // console.log("productId", productId);
+          // console.log("batchData", batchData);
+          const res: any = await createBatchService(
+            String(productId),
+            batchData
+          );
+          // console.log("res", res);
+          if (res) {
+            const batchId = res.batchId;
+            await updateStockOnPurchase(
+              productId,
+              batchId,
+              free,
+              quantity,
+              session
+            );
+            const productData = {
+              productId,
+              batchId: batchId,
+              free,
+              quantity,
+              invoicerate: item.rate,
+              discount: item.discount,
+            };
+            products.push(productData);
+            item.batchId = batchId;
+          }
+        } catch (error) {
+          throw new Error("Error while creating batch");
+        }
+      }
+    }
+
+    invoice.invoiceDate = data.invoiceDate;
+    invoice.invoiceNumber = data.invoiceNumber;
+    invoice.customerId = new mongoose.Types.ObjectId(data.customerId);
+    invoice.updatedAt = new Date();
+    // invoice.items = [...data.items];
+    invoice.items = new mongoose.Types.DocumentArray(data.items);
+
+    return await invoice.save();
+  } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
+    logger.error(`Error updating invoice: ${error.message}`);
+    throw new Error("Error while updating invoice");
   }
-
-  invoice.invoiceDate = data.invoiceDate;
-  invoice.invoiceNumber = data.invoiceNumber;
-  invoice.customerId = new mongoose.Types.ObjectId(data.customerId);
-  invoice.updatedAt = new Date();
-  // invoice.items = [...data.items];
-  invoice.items = new mongoose.Types.DocumentArray(data.items);
-
-  return await invoice.save();
 };
 
 const deleteInvoiceService = async (id: string) => {
-  const invoice = await Invoice.findById(id);
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (!invoice) {
-    throw new Error("Invoice not found");
-  }
+  try {
+    const invoice = await Invoice.findById(id).session(session);
 
-  const { type } = invoice;
-
-  for (const item of invoice.items) {
-    const { productId, batchId, free, quantity } = item;
-
-    if (type === "sale") {
-      updateStockOnSaleOnDelete(
-        String(productId),
-        String(batchId),
-        free,
-        quantity
-      );
-    } else if (type === "purchase") {
-      updateStockOnPurchaseOnDelete(
-        String(productId),
-        String(batchId),
-        free,
-        quantity
-      );
+    if (!invoice) {
+      throw new Error("Invoice not found");
     }
-  }
 
-  return await Invoice.findByIdAndDelete(id);
+    const { type } = invoice;
+
+    for (const item of invoice.items) {
+      const { productId, batchId, free, quantity } = item;
+
+      if (type === "sale") {
+        updateStockOnSaleOnDelete(
+          String(productId),
+          String(batchId),
+          free,
+          quantity,
+          session
+        );
+      } else if (type === "purchase") {
+        updateStockOnPurchaseOnDelete(
+          String(productId),
+          String(batchId),
+          free,
+          quantity,
+          session
+        );
+      }
+    }
+
+    const deletedInvoice = await Invoice.findByIdAndDelete(id, { session });
+    await session.commitTransaction();
+    session.endSession();
+    logger.info(`Invoice deleted: ${id}`);
+
+    return deletedInvoice;
+  } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
+    logger.error(`Error deleting invoice: ${error.message}`);
+    throw new Error("Error while deleting invoice");
+  }
 };
 
 export {

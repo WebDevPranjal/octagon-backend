@@ -24,9 +24,13 @@ const login = async (req: Request, res: Response) => {
       email: user.email,
     };
 
-    const token: string = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token: string = jwt.sign(
+      payload,
+      process.env.JWT_SECRET || "octagon-backend",
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res.cookie("token", token, {
       httpOnly: false,

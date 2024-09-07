@@ -1,13 +1,14 @@
-import { ObjectId } from "mongoose";
+import { ClientSession, ObjectId } from "mongoose";
 import Product from "../products/modals/schema.js";
 
 const updateStockOnSale = async (
   productId: ObjectId,
   batchId: ObjectId,
   free: number,
-  quantity: number
+  quantity: number,
+  session: ClientSession
 ) => {
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).session(session);
 
   if (!product) {
     throw new Error("Product not found");
@@ -26,9 +27,10 @@ const updateStockOnPurchase = async (
   productId: ObjectId,
   batchId: string,
   free: number,
-  quantity: number
+  quantity: number,
+  session: ClientSession
 ) => {
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).session(session);
 
   if (!product) {
     throw new Error("Product not found");
@@ -40,16 +42,17 @@ const updateStockOnPurchase = async (
     }
   });
 
-  return await product.save();
+  return await product.save({ session });
 };
 
 const updateStockOnSaleOnDelete = async (
   productId: string,
   batchId: string,
   free: number,
-  quantity: number
+  quantity: number,
+  session: ClientSession
 ) => {
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).session(session);
 
   if (!product) {
     throw new Error("Product not found");
@@ -69,16 +72,17 @@ const updateStockOnSaleOnDelete = async (
 
   batch.quantity = batch.quantity + Number(quantity) + Number(free);
 
-  return await product.save();
+  return await product.save({ session });
 };
 
 const updateStockOnPurchaseOnDelete = async (
   productId: string,
   batchId: string,
   free: number,
-  quantity: number
+  quantity: number,
+  session: ClientSession
 ) => {
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).session(session);
 
   if (!product) {
     throw new Error("Product not found");
@@ -98,7 +102,7 @@ const updateStockOnPurchaseOnDelete = async (
 
   batch.quantity = batch.quantity - Number(quantity) - Number(free);
 
-  return await product.save();
+  return await product.save({ session });
 };
 
 export {

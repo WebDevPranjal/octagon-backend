@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   createInvoiceService,
   getAllInvoicesService,
@@ -6,65 +6,95 @@ import {
   deleteInvoiceService,
   updateInvoiceService,
 } from "../services/service.js";
+import logger from "../../utils/logger.js";
+import asyncHandler from "../../utils/async-handler.js";
 
-const createInvoice = async (req: Request, res: Response) => {
-  try {
-    const { data } = req.body;
-    const invoice = await createInvoiceService(data);
-    res.status(201).json({ msg: "Invoice created", data: invoice });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "Error while creating invoice" });
-  }
-};
+const createInvoice = asyncHandler(async (req: Request, res: Response) => {
+  const { data } = req.body;
 
-const getAllInvoices = async (req: Request, res: Response) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ msg: "Unauthorised" });
-    }
-    const userId = req.user._id;
-    const invoices = await getAllInvoicesService(userId);
-    res.status(200).json({ data: invoices });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "Error while fetching invoices" });
+  if (!data) {
+    logger.error("Invoice creation failed: Missing data");
+    return res.status(400).json({ msg: "Missing invoice data" });
   }
-};
 
-const getInvoiceById = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const invoice = await getInvoiceByIdService(id);
-    res.status(200).json({ data: invoice });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "Error while fetching invoice" });
-  }
-};
+  const invoice = await createInvoiceService(data);
 
-const updateInvoice = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { data } = req.body;
-    const invoice = await updateInvoiceService(id, data);
-    res.status(200).json({ msg: "Invoice updated", data: invoice });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "Error while updating invoice" });
-  }
-};
+  logger.info(`Invoice created: ${invoice?.invoiceNumber}`);
+  res.status(201).json({ msg: "Invoice created successfully", data: invoice });
+});
 
-const deleteInvoice = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const invoice = await deleteInvoiceService(id);
-    res.status(200).json({ msg: "Invoice deleted", data: invoice });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "Error while deleting invoice" });
+const getAllInvoices = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.user) {
+    logger.warn("Unauthorized access to invoices");
+    return res.status(401).json({ msg: "Unauthorized" });
   }
-};
+
+  const userId = req.user._id;
+  const invoices = await getAllInvoicesService(userId);
+
+  logger.info(`Invoices fetched for user: ${userId}`);
+  res
+    .status(200)
+    .json({ msg: "Invoices fetched successfully", data: invoices });
+});
+
+const getInvoiceById = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    logger.error("Invoice ID is missing");
+    return res.status(400).json({ msg: "Missing invoice ID" });
+  }
+
+  const invoice = await getInvoiceByIdService(id);
+
+  if (!invoice) {
+    logger.error(`Invoice not found: ${id}`);
+    return res.status(404).json({ msg: "Invoice not found" });
+  }
+
+  logger.info(`Invoice fetched: ${id}`);
+  res.status(200).json({ msg: "Invoice fetched successfully", data: invoice });
+});
+
+const updateInvoice = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { data } = req.body;
+
+  if (!id || !data) {
+    logger.error("Invoice update failed: Missing ID or data");
+    return res.status(400).json({ msg: "Missing invoice ID or data" });
+  }
+
+  const invoice = await updateInvoiceService(id, data);
+
+  if (!invoice) {
+    logger.error(`Invoice not found for update: ${id}`);
+    return res.status(404).json({ msg: "Invoice not found" });
+  }
+
+  logger.info(`Invoice updated: ${id}`);
+  res.status(200).json({ msg: "Invoice updated successfully", data: invoice });
+});
+
+const deleteInvoice = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    logger.error("Invoice deletion failed: Missing ID");
+    return res.status(400).json({ msg: "Missing invoice ID" });
+  }
+
+  const invoice = await deleteInvoiceService(id);
+
+  if (!invoice) {
+    logger.error(`Invoice not found for deletion: ${id}`);
+    return res.status(404).json({ msg: "Invoice not found" });
+  }
+
+  logger.info(`Invoice deleted: ${id}`);
+  res.status(200).json({ msg: "Invoice deleted successfully", data: invoice });
+});
 
 export {
   createInvoice,
