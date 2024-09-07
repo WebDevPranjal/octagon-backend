@@ -1,4 +1,4 @@
-import Product from "../app/products/modals/schema.js";
+import Product from "../products/modals/schema.js";
 import { Request, Response } from "express";
 
 type Product = {

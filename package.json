@@ -21,12 +21,20 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/html-pdf": "^3.0.3",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/pdfkit": "^0.13.4",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "convert-html-to-pdf": "^1.0.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-pdf": "^1.2.2",
+    "html-pdf": "^3.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.5",
     "nodemon": "^3.1.0"

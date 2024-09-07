@@ -1,4 +1,4 @@
-import { InvoiceType } from "../../../types/invoice.js";
+import { InvoiceItemsType, InvoiceType } from "../../../types/invoice.js";
 import {
   updateStockOnSale,
   updateStockOnPurchase,
@@ -147,8 +147,6 @@ const getInvoiceByIdService = async (id: string) => {
         return String(batch._id) === String(item.batchId);
       })[0];
 
-      //console.log("batch hai ye", batch);
-
       if (!batch) {
         throw new Error("Batch not found");
       }
@@ -223,7 +221,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
     }
   }
 
-  for (const item of data.items) {
+  for (let item of data.items) {
     const { productId, batchId, free, quantity } = item;
 
     let products = [];
@@ -240,10 +238,10 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
       };
 
       try {
-        console.log("productId", productId);
-        console.log("batchData", batchData);
+        // console.log("productId", productId);
+        // console.log("batchData", batchData);
         const res: any = await createBatchService(String(productId), batchData);
-        console.log("res", res);
+        // console.log("res", res);
         if (res) {
           const batchId = res.batchId;
           await updateStockOnPurchase(productId, batchId, free, quantity);
@@ -256,6 +254,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
             discount: item.discount,
           };
           products.push(productData);
+          item.batchId = batchId;
         }
       } catch (error) {
         throw new Error("Error while creating batch");
@@ -266,8 +265,9 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
   invoice.invoiceDate = data.invoiceDate;
   invoice.invoiceNumber = data.invoiceNumber;
   invoice.customerId = new mongoose.Types.ObjectId(data.customerId);
-  console.log(...data.items);
-  invoice.items = [...data.items];
+  invoice.updatedAt = new Date();
+  // invoice.items = [...data.items];
+  invoice.items = new mongoose.Types.DocumentArray(data.items);
 
   return await invoice.save();
 };

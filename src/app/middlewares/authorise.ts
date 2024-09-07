@@ -4,7 +4,8 @@ import User from "../users/modals/modal.js";
 
 export const userAuth = async (req: Request, res: Response, next: any) => {
   try {
-    const token = req.cookies.token;
+    // console.log(req);
+    const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({ msg: "Token is not provided" });
@@ -22,11 +23,13 @@ export const userAuth = async (req: Request, res: Response, next: any) => {
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
+    } else {
+      req.user = user;
     }
 
     next();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ msg: "Unauthorised" });
   }
 };

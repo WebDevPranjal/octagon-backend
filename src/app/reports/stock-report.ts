@@ -1,4 +1,4 @@
-import Product from "../app/products/modals/schema.js";
+import Product from "../products/modals/schema.js";
 import { Request, Response } from "express";
 
 type Data = {
@@ -6,7 +6,7 @@ type Data = {
   quantity: number;
 };
 
-export const StockReport = async (req: Request, res: Response) => {
+export const stockReport = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
     let stock = 0;
@@ -22,7 +22,8 @@ export const StockReport = async (req: Request, res: Response) => {
       });
       stock = 0;
     }
-    return res.status(200).json(data);
+
+    res.send(data);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

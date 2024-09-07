@@ -98,7 +98,6 @@ const updateStockOnPurchaseOnDelete = async (
 
   batch.quantity = batch.quantity - Number(quantity) - Number(free);
 
-  console.log("hello");
   return await product.save();
 };
 

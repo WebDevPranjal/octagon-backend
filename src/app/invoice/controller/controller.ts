@@ -20,8 +20,10 @@ const createInvoice = async (req: Request, res: Response) => {
 
 const getAllInvoices = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id;
-    // console.log(userId);
+    if (!req.user) {
+      return res.status(401).json({ msg: "Unauthorised" });
+    }
+    const userId = req.user._id;
     const invoices = await getAllInvoicesService(userId);
     res.status(200).json({ data: invoices });
   } catch (error) {

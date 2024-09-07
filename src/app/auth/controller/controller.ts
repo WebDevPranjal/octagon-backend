@@ -24,18 +24,23 @@ const login = async (req: Request, res: Response) => {
       email: user.email,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    const token: string = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-
-    console.log(token);
 
     res.cookie("token", token, {
       httpOnly: false,
       secure: false,
+      sameSite: "none",
     });
 
-    res.status(200).json({ msg: "Login success" });
+    res.cookie("user", user, {
+      httpOnly: false,
+      secure: false,
+      sameSite: "none",
+    });
+
+    res.status(200).json({ msg: "Login success", user: user });
   } catch (error) {}
 };
 

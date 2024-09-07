@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Invoice from "../app/invoice/modals/schema.js";
-import Product from "../app/products/modals/schema.js";
+import Invoice from "../invoice/modals/schema.js";
+import Product from "../products/modals/schema.js";
 
 type Product = {
   name: string;
