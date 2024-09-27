@@ -6,15 +6,28 @@ import {
   updateCustomerServices,
   deleteCustomerServices,
 } from "../services/service.js";
+import logger from "../../utils/logger.js";
 
 const createCustomer = async (req: Request, res: Response) => {
   try {
     const { data } = req.body;
     const result = await createCustomerServices(data);
-    res.status(201).send(result);
+
+    logger.info(`Customer created: ${result?.name}`);
+
+    res.status(201).json({
+      message: "Customer created successfully",
+      data: result,
+      success: true,
+    });
   } catch (error: any) {
-    console.log(error.message);
-    res.status(500).send({ message: "Error while creating customer" });
+    logger.error(`Customer creation failed: ${error.message}`);
+
+    res.status(500).send({
+      message: "Error while creating customer",
+      success: false,
+      data: null,
+    });
   }
 };
 
@@ -22,28 +35,57 @@ const getCustomerByID = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await getCustomerByIDServices(id);
+
     if (result) {
-      res.status(200).send(result);
+      logger.info(`Customer fetched: ${result?.name}`);
+      res.status(200).json({
+        message: "Customer fetched successfully",
+        data: result,
+        success: true,
+      });
     } else {
-      res.status(404).send({ message: "Customer not found" });
+      logger.error("Customer not found");
+      res
+        .status(404)
+        .send({ message: "Customer not found", success: false, data: null });
     }
   } catch (error: any) {
-    console.log(error.message);
-    res.status(500).send({ message: "Error while getting customer" });
+    logger.error(`Customer fetch failed: ${error.message}`);
+
+    res.status(500).send({
+      message: "Error while getting customer",
+      success: false,
+      data: null,
+    });
   }
 };
 
 const getAllCustomer = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
-      return res.status(401).send({ message: "Unauthorized" });
+      logger.warn("Unauthorized access to customers");
+      return res
+        .status(401)
+        .send({ message: "Unauthorized", data: null, success: false });
     }
     const userId = req.user._id;
     const result = await getAllCustomerServices(userId);
-    res.status(200).send(result);
+
+    logger.info(`Customers fetched for user: ${userId}`);
+
+    res.status(200).json({
+      message: "Customers fetched successfully",
+      data: result,
+      success: true,
+    });
   } catch (error: any) {
-    console.log(error.message);
-    res.status(500).send({ message: "Error while getting all customers" });
+    logger.error(`Customer fetch failed: ${error.message}`);
+
+    res.status(500).json({
+      message: "Error while getting all customers",
+      success: false,
+      data: null,
+    });
   }
 };
 
@@ -51,17 +93,30 @@ const updateCustomer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { data } = req.body;
+
     const result = await updateCustomerServices(id, data);
+
     if (result) {
-      res
-        .status(200)
-        .send({ message: "Customer updated successfully", data: result });
+      logger.info(`Customer updated: ${result?.name}`);
+      res.status(200).send({
+        message: "Customer updated successfully",
+        data: result,
+        success: true,
+      });
     } else {
-      res.status(404).send({ message: "Customer not found" });
+      logger.error("Customer not found");
+      res
+        .status(404)
+        .send({ message: "Customer not found", success: false, data: null });
     }
   } catch (error: any) {
-    console.log(error.message);
-    res.status(500).send({ message: "Error while updating customer" });
+    logger.error(`Customer update failed: ${error.message}`);
+
+    res.status(500).send({
+      message: "Error while updating customer",
+      success: false,
+      data: null,
+    });
   }
 };
 
@@ -69,14 +124,28 @@ const deleteCustomer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await deleteCustomerServices(id);
+
     if (result) {
-      res.status(200).send({ message: "Customer deleted successfully" });
+      logger.info(`Customer deleted: ${result?.name}`);
+      res.status(200).json({
+        message: "Customer deleted successfully",
+        data: result,
+        success: true,
+      });
     } else {
-      res.status(404).send({ message: "Customer not found" });
+      logger.error("Customer not found");
+      res
+        .status(404)
+        .send({ message: "Customer not found", success: false, data: null });
     }
   } catch (error: any) {
-    console.log(error.message);
-    res.status(500).send({ message: "Error while deleting customer" });
+    logger.error(`Customer deletion failed: ${error.message}`);
+
+    res.status(500).send({
+      message: "Error while deleting customer",
+      success: false,
+      data: null,
+    });
   }
 };
 

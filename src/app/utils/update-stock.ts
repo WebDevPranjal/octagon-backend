@@ -3,7 +3,7 @@ import Product from "../products/modals/schema.js";
 
 const updateStockOnSale = async (
   productId: ObjectId,
-  batchId: ObjectId,
+  batchId: string,
   free: number,
   quantity: number,
   session: ClientSession
@@ -15,12 +15,12 @@ const updateStockOnSale = async (
   }
 
   product.batches.find((item) => {
-    if (item._id && item._id.equals(String(batchId))) {
+    if (item._id && item._id.equals(batchId)) {
       item.quantity = item.quantity - Number(quantity) - Number(free);
     }
   });
 
-  return await product.save();
+  return await product.save({ session });
 };
 
 const updateStockOnPurchase = async (

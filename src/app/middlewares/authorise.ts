@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../users/modals/modal.js";
 
 export const userAuth = async (req: Request, res: Response, next: any) => {
@@ -11,7 +12,10 @@ export const userAuth = async (req: Request, res: Response, next: any) => {
       return res.status(401).json({ msg: "Token is not provided" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded: any = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "octagon-backend"
+    );
 
     if (!decoded) {
       return res.status(401).json({ msg: "Unauthorised" });
@@ -29,7 +33,6 @@ export const userAuth = async (req: Request, res: Response, next: any) => {
 
     next();
   } catch (error) {
-    // console.log(error);
     return res.status(401).json({ msg: "Unauthorised" });
   }
 };

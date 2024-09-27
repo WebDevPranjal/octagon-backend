@@ -10,7 +10,7 @@ import Customer from "../../customers/modals/schema.js";
 import Product from "../../products/modals/schema.js";
 import { BatchType } from "../../../types/product.js";
 import { createBatchService } from "../../products/services/service.js";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import logger from "../../utils/logger.js";
 
 const createInvoiceService = async (invoice: InvoiceType) => {
@@ -22,10 +22,19 @@ const createInvoiceService = async (invoice: InvoiceType) => {
     let products = [];
 
     for (const item of invoice.items) {
-      const { productId, batchId, free, quantity } = item;
+      const { productId, batch, free, quantity } = item;
 
-      if (type === "sale" && batchId) {
-        updateStockOnSale(productId, batchId, free, quantity, session);
+      if (type === "sale" && batch) {
+        await updateStockOnSale(productId, batch, free, quantity, session);
+        const productData = {
+          productId,
+          batchId: batch,
+          free,
+          quantity,
+          rate: item.rate,
+          discount: item.discount,
+        };
+        products.push(productData);
       } else if (type === "purchase") {
         const batchData = {
           name: item.batch,
@@ -38,7 +47,8 @@ const createInvoiceService = async (invoice: InvoiceType) => {
         try {
           const res: any = await createBatchService(
             String(productId),
-            batchData
+            batchData,
+            session
           );
           if (res) {
             const batchId = res.batchId;
@@ -74,6 +84,8 @@ const createInvoiceService = async (invoice: InvoiceType) => {
           customerId: invoice.customerId,
           type: invoice.type,
           user: invoice.user,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       { session }
@@ -191,6 +203,7 @@ const getInvoiceByIdService = async (id: string) => {
         gstCategory: product.gstCategory,
         companyName: product.companyName,
         batch: batch.name,
+        batchId: batch._id,
         expireDate: batch.expireDate,
         packaging: batch.packaging,
         mrp: batch.mrp,
@@ -244,6 +257,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
           quantity,
           session
         );
+        console.log("product old stock updated");
       } else if (type === "purchase") {
         await updateStockOnPurchaseOnDelete(
           String(productId),
@@ -254,14 +268,25 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
         );
       }
     }
-
+    let products = [];
+    // console.log(data);
     for (let item of data.items) {
-      const { productId, batchId, free, quantity } = item;
+      const { productId, batch, free, quantity } = item;
 
-      let products = [];
-
-      if (type === "sale" && batchId) {
-        await updateStockOnSale(productId, batchId, free, quantity, session);
+      if (type === "sale" && batch) {
+        console.log("iam reahing here");
+        console.log(productId, batch, free, quantity);
+        await updateStockOnSale(productId, batch, free, quantity, session);
+        const batchId = new mongoose.Types.ObjectId(batch);
+        const productData = {
+          productId,
+          batchId,
+          free,
+          quantity,
+          rate: item.rate,
+          discount: item.discount,
+        };
+        products.push(productData);
       } else if (type === "purchase") {
         const batchData = {
           name: item.batch,
@@ -272,13 +297,12 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
         };
 
         try {
-          // console.log("productId", productId);
-          // console.log("batchData", batchData);
           const res: any = await createBatchService(
             String(productId),
-            batchData
+            batchData,
+            session
           );
-          // console.log("res", res);
+
           if (res) {
             const batchId = res.batchId;
             await updateStockOnPurchase(
@@ -290,16 +314,17 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
             );
             const productData = {
               productId,
-              batchId: batchId,
+              batchId,
               free,
               quantity,
-              invoicerate: item.rate,
+              rate: item.rate,
               discount: item.discount,
             };
             products.push(productData);
             item.batchId = batchId;
           }
         } catch (error) {
+          console.log(error);
           throw new Error("Error while creating batch");
         }
       }
@@ -309,10 +334,17 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
     invoice.invoiceNumber = data.invoiceNumber;
     invoice.customerId = new mongoose.Types.ObjectId(data.customerId);
     invoice.updatedAt = new Date();
-    // invoice.items = [...data.items];
-    invoice.items = new mongoose.Types.DocumentArray(data.items);
 
-    return await invoice.save();
+    invoice.items = new mongoose.Types.DocumentArray(products);
+
+    console.log("iam reahing here");
+
+    const updatedInvoice = await invoice.save({ session });
+    await session.commitTransaction();
+    session.endSession();
+
+    // console.log(updatedInvoice);
+    return updatedInvoice;
   } catch (error: any) {
     await session.abortTransaction();
     session.endSession();

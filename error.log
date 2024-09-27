@@ -1,0 +1,70 @@
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-07T18:18:12.608Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-07T18:18:12.609Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-07T18:23:58.992Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-07T18:23:58.994Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-07T18:24:51.045Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-07T18:24:51.047Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-07T18:27:10.481Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-07T18:27:10.483Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-07T18:27:50.734Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-07T18:27:50.736Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T10:42:22.682Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T10:42:22.684Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T10:45:16.923Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T10:45:16.924Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T10:47:29.668Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T10:47:29.669Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T10:50:46.266Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T10:50:46.268Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T10:53:18.116Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T10:53:18.118Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:01:26.583Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:01:26.584Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:03:03.131Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:03:03.132Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:04:18.190Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:04:18.191Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:05:33.433Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:05:33.435Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:06:30.941Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:06:30.943Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T11:09:46.194Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T11:09:46.195Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T12:05:08.389Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T12:05:08.390Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T12:25:36.207Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T12:25:36.207Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T12:57:09.774Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T12:57:09.776Z"}
+{"level":"error","message":"Error creating invoice: Error while creating batch","timestamp":"2024-09-08T12:59:13.814Z"}
+{"level":"error","message":"Invoice creation failed: Error while creating invoice","timestamp":"2024-09-08T12:59:13.814Z"}
+{"level":"error","message":"Error updating invoice: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","timestamp":"2024-09-27T11:35:13.048Z"}
+{"level":"error","message":"Invoice update failed: Error while updating invoice","timestamp":"2024-09-27T11:35:13.049Z"}
+{"level":"error","message":"Error updating invoice: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","timestamp":"2024-09-27T11:38:20.020Z"}
+{"level":"error","message":"Invoice update failed: Error while updating invoice","timestamp":"2024-09-27T11:38:20.021Z"}
+{"level":"error","message":"Error updating invoice: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","timestamp":"2024-09-27T11:41:48.317Z"}
+{"level":"error","message":"Invoice update failed: Error while updating invoice","timestamp":"2024-09-27T11:41:48.318Z"}
+{"level":"error","message":"Error updating invoice: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","timestamp":"2024-09-27T11:42:42.566Z"}
+{"level":"error","message":"Invoice update failed: Error while updating invoice","timestamp":"2024-09-27T11:42:42.568Z"}
+{"level":"error","message":"Error updating invoice: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","timestamp":"2024-09-27T12:43:01.785Z"}
+{"level":"error","message":"Invoice update failed: Error while updating invoice","timestamp":"2024-09-27T12:43:01.786Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:24:15.004Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:24:20.434Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:25:37.200Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:26:35.830Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:27:25.875Z"}
+{"level":"error","message":"Invoice not found: 66f6afdb311cfe71bc6403de","timestamp":"2024-09-27T13:27:30.427Z"}
+{"level":"error","message":"Error deleting invoice: Invoice not found","timestamp":"2024-09-27T13:28:56.738Z"}
+{"level":"error","message":"Invoice deletion failed: Error while deleting invoice","timestamp":"2024-09-27T13:28:56.740Z"}
+{"level":"error","message":"Invoice not found: 66f6b4973ad3457132d2acd7","timestamp":"2024-09-27T14:14:17.638Z"}
+{"level":"error","message":"Invoice not found: 66f6b4973ad3457132d2acd7","timestamp":"2024-09-27T14:14:41.758Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:00:37.631Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:01:04.921Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:01:15.965Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:01:24.593Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:01:55.817Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:02:22.535Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:02:42.779Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:03:03.107Z"}
+{"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:03:59.335Z"}
+{"level":"error","message":"Invoice not found: 66f6cabcf67c43343c89e369","timestamp":"2024-09-27T15:18:04.082Z"}

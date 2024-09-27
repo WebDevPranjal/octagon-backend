@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Product from "../products/modals/schema.js";
 import { Request, Response } from "express";
 

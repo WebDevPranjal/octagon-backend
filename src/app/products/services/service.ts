@@ -1,3 +1,4 @@
+import { ClientSession } from "mongoose";
 import { BatchType, ProductType } from "../../../types/product.js";
 import Product from "../modals/schema.js";
 
@@ -60,9 +61,13 @@ const deleteProductService = (id: string) => {
   }
 };
 
-const createBatchService = async (id: string, batch: BatchType) => {
+const createBatchService = async (
+  id: string,
+  batch: BatchType,
+  session: ClientSession
+) => {
   try {
-    const existingProduct = await Product.findOne({ _id: id });
+    const existingProduct = await Product.findOne({ _id: id }).session(session);
 
     if (!existingProduct) {
       return new Error("Product not found");
@@ -70,11 +75,9 @@ const createBatchService = async (id: string, batch: BatchType) => {
 
     existingProduct.batches.push(batch);
     existingProduct.updatedAt = new Date();
-    const updatedProduct = await existingProduct.save();
-    // console.log(updatedProduct);
+    const updatedProduct = await existingProduct.save({ session });
     const batchId =
       updatedProduct.batches[updatedProduct.batches.length - 1]._id;
-    // console.log(updatedProduct);
     return { updatedProduct, batchId };
   } catch (error) {
     throw error;
