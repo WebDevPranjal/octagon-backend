@@ -16,14 +16,14 @@ const createInvoice = async (req: Request, res: Response) => {
       logger.error("Invoice creation failed: Missing data");
       return res
         .status(400)
-        .json({ msg: "Missing invoice data", success: false, data: null });
+        .json({ message: "Missing invoice data", success: false, data: null });
     }
 
     const invoice = await createInvoiceService(data);
 
     logger.info(`Invoice created: ${invoice?.invoiceNumber}`);
     res.status(201).json({
-      msg: "Invoice created successfully",
+      message: "Invoice created successfully",
       data: invoice,
       success: true,
     });
@@ -31,7 +31,7 @@ const createInvoice = async (req: Request, res: Response) => {
     logger.error(`Invoice creation failed: ${error.message}`);
     res
       .status(500)
-      .json({ msg: "Invoice creation failed", success: false, data: null });
+      .json({ message: "Invoice creation failed", success: false, data: null });
   }
 };
 
@@ -41,7 +41,7 @@ const getAllInvoices = async (req: Request, res: Response) => {
       logger.warn("Unauthorized access to invoices");
       return res
         .status(401)
-        .json({ msg: "Unauthorized", data: null, success: false });
+        .json({ message: "Unauthorized", data: null, success: false });
     }
 
     const userId = req.user._id;
@@ -49,7 +49,7 @@ const getAllInvoices = async (req: Request, res: Response) => {
 
     logger.info(`Invoices fetched for user: ${userId}`);
     res.status(200).json({
-      msg: "Invoices fetched successfully",
+      message: "Invoices fetched successfully",
       data: invoices,
       success: true,
     });
@@ -57,7 +57,7 @@ const getAllInvoices = async (req: Request, res: Response) => {
     logger.error(`Invoice creation failed: ${error.message}`);
     res
       .status(500)
-      .json({ msg: "Invoice creation failed", success: false, data: null });
+      .json({ message: "Invoice creation failed", success: false, data: null });
   }
 };
 
@@ -69,7 +69,7 @@ const getInvoiceById = async (req: Request, res: Response) => {
       logger.error("Invoice ID is missing");
       return res
         .status(400)
-        .json({ msg: "Missing invoice ID", data: null, success: false });
+        .json({ message: "Missing invoice ID", data: null, success: false });
     }
 
     const invoice = await getInvoiceByIdService(id);
@@ -78,12 +78,13 @@ const getInvoiceById = async (req: Request, res: Response) => {
       logger.error(`Invoice not found: ${id}`);
       return res
         .status(404)
-        .json({ msg: "Invoice not found", data: null, success: false });
+        .json({ message: "Invoice not found", data: null, success: false });
     }
 
     logger.info(`Invoice fetched: ${id}`);
+
     res.status(200).json({
-      msg: "Invoice fetched successfully",
+      message: "Invoice fetched successfully",
       data: invoice,
       success: true,
     });
@@ -91,7 +92,7 @@ const getInvoiceById = async (req: Request, res: Response) => {
     logger.error(`Invoice creation failed: ${error.message}`);
     res
       .status(500)
-      .json({ msg: "Invoice creation failed", data: null, success: false });
+      .json({ message: "Invoice creation failed", data: null, success: false });
   }
 };
 
@@ -103,7 +104,7 @@ const updateInvoice = async (req: Request, res: Response) => {
     if (!id || !data) {
       logger.error("Invoice update failed: Missing ID or data");
       return res.status(400).json({
-        msg: "Missing invoice ID or data",
+        message: "Missing invoice ID or data",
         success: false,
         data: null,
       });
@@ -115,12 +116,12 @@ const updateInvoice = async (req: Request, res: Response) => {
       logger.error(`Invoice not found for update: ${id}`);
       return res
         .status(404)
-        .json({ msg: "Invoice not found", success: false, data: null });
+        .json({ message: "Invoice not found", success: false, data: null });
     }
 
     logger.info(`Invoice updated: ${id}`);
     res.status(200).json({
-      msg: "Invoice updated successfully",
+      message: "Invoice updated successfully",
       data: invoice,
       success: true,
     });
@@ -128,7 +129,7 @@ const updateInvoice = async (req: Request, res: Response) => {
     logger.error(`Invoice update failed: ${error.message}`);
     return res
       .status(500)
-      .json({ msg: "Invoice update failed", success: false, data: null });
+      .json({ message: "Invoice update failed", success: false, data: null });
   }
 };
 
@@ -140,7 +141,7 @@ const deleteInvoice = async (req: Request, res: Response) => {
       logger.error("Invoice deletion failed: Missing ID");
       return res
         .status(400)
-        .json({ msg: "Missing invoice ID", data: null, success: false });
+        .json({ message: "Missing invoice ID", data: null, success: false });
     }
 
     const invoice = await deleteInvoiceService(id);
@@ -149,22 +150,20 @@ const deleteInvoice = async (req: Request, res: Response) => {
       logger.error(`Invoice not found for deletion: ${id}`);
       return res
         .status(404)
-        .json({ msg: "Invoice not found", data: null, success: false });
+        .json({ message: "Invoice not found", data: null, success: false });
     }
 
     logger.info(`Invoice deleted: ${id}`);
-    res
-      .status(200)
-      .json({
-        msg: "Invoice deleted successfully",
-        data: invoice,
-        success: true,
-      });
+    res.status(200).json({
+      message: "Invoice deleted successfully",
+      data: invoice,
+      success: true,
+    });
   } catch (error: any) {
     logger.error(`Invoice deletion failed: ${error.message}`);
     return res
       .status(500)
-      .json({ msg: "Invoice deletion failed", success: false, data: null });
+      .json({ message: "Invoice deletion failed", success: false, data: null });
   }
 };
 

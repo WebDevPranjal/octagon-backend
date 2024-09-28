@@ -225,7 +225,7 @@ const getInvoiceByIdService = async (id: string) => {
       items: itemsData,
     };
 
-    console.log(data);
+    // console.log(data);
 
     return data;
   } catch (error) {
