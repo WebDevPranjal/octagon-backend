@@ -18,10 +18,10 @@ jobs:
 
       - name: Stop existing containers
         run: |
-          docker ps -q -f "name=octagon-backend" | xargs -r docker stop
-          docker ps -aq -f "name=octagon-backend" | xargs -r docker rm
+          sudo docker ps -q -f "name=octagon-backend" | xargs -r docker stop
+          sudo docker ps -aq -f "name=octagon-backend" | xargs -r docker rm
 
       - name: Build and run new container
         run: |
-          docker build -t octagon-backend:latest .
-          docker run -d --rm --name octagon-backend -p 8080:8080 octagon-backend:latest
+          sudo docker build -t octagon-backend:latest .
+          sudo docker run -d --rm --name octagon-backend -p 8080:8080 octagon-backend:latest
