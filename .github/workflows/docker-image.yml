@@ -3,26 +3,19 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger deployment on pushes to the main branch
+      - main # Trigger deployment on pushes to the main branch
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted  # Specify the self-hosted runner
+    runs-on: self-hosted # Specify the self-hosted runner
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 4: Build the application
-      - name: Build application
-        run: npm run build
-
-      # Step 5: Build Docker image
       - name: Build Docker image
         run: docker build -t octagon-backend:latest .
 
-      # Step 6: Deploy the application
       - name: Deploy Application
         run: |
           docker stop octagon-backend || true
