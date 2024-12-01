@@ -34,7 +34,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  return res.json({ message: "Welcome to octagon backend" });
+  return res.json({ message: "Welcome to octagon backend testing" });
 });
 app.use("/", authRotes);
 app.use("/api/customer", userAuth, customerRoutes);
