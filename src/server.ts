@@ -25,7 +25,10 @@ databaseConnect();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://octagon-frotend-w8pz.vercel.app/",
+    ],
     credentials: true,
   })
 );

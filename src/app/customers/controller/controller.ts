@@ -62,6 +62,7 @@ const getCustomerByID = async (req: Request, res: Response) => {
 
 const getAllCustomer = async (req: Request, res: Response) => {
   try {
+    // console.log(req.user);
     if (!req.user) {
       logger.warn("Unauthorized access to customers");
       return res

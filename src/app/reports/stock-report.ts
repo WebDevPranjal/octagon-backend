@@ -8,7 +8,15 @@ type Data = {
 
 export const stockReport = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find();
+    const userId = req?.user?._id;
+
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized", data: null, success: false });
+    }
+
+    const products = await Product.find({ user: userId });
     let stock = 0;
     let data: Data[] = [];
 
@@ -23,7 +31,7 @@ export const stockReport = async (req: Request, res: Response) => {
       stock = 0;
     }
 
-    res.send(data);
+    res.json({ message: "Stock report", data, success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

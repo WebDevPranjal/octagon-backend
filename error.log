@@ -68,3 +68,233 @@
 {"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:03:03.107Z"}
 {"level":"error","message":"Invoice not found: 66f6be483ad3457132d2ae2c","timestamp":"2024-09-27T15:03:59.335Z"}
 {"level":"error","message":"Invoice not found: 66f6cabcf67c43343c89e369","timestamp":"2024-09-27T15:18:04.082Z"}
+[31m{[39m
+[31m  message: 'Product fetch failed: Cast to ObjectId failed for value "get" (type string) at path "_id" for model "Product"',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:11:12.864Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product fetch failed: Cast to ObjectId failed for value "get" (type string) at path "_id" for model "Product"',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:11:55.657Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product fetch failed: Cast to ObjectId failed for value "get" (type string) at path "_id" for model "Product"',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:12:10.679Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:55:42.082Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:56:23.971Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:56:44.493Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:58:12.124Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:59:16.915Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T09:59:48.660Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T10:50:34.719Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T10:52:15.751Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T10:54:48.513Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Product delete failed: Product is associated with an invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-10-20T10:55:19.974Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Error creating invoice: Error while creating batch',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T12:54:53.358Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice creation failed: Error while creating invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T12:54:53.359Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Error creating invoice: Error while creating batch',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T12:59:15.862Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice creation failed: Error while creating invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T12:59:15.862Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Error updating invoice: Product not found',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T13:06:32.581Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice update failed: Error while updating invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T13:06:32.581Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Error updating invoice: Product not found',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T13:09:45.468Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice update failed: Error while updating invoice',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T13:09:45.468Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6745c8644d33b4248e00669d',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-26T13:09:48.590Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-27T08:42:01.940Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-27T08:42:01.950Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:45:49.039Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:45:49.042Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:48:25.157Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:48:25.158Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:50:47.933Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:50:47.959Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:51:01.593Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:51:01.594Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:52:35.959Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:52:35.961Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:53:19.410Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67165f63823f6a9b68dac944',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-28T03:53:19.422Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67493dad4d33b4248e027b95',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:18:33.480Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67493dad4d33b4248e027b95',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:19:37.717Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67493c404d33b4248e026cf9',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:20:42.640Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 67493c404d33b4248e026cf9',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:20:42.657Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:25:30.410Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:25:30.411Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:26:13.602Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:26:13.604Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:26:28.917Z'[39m
+[31m}[39m
+[31m{[39m
+[31m  message: 'Invoice not found: 6748b4124d33b4248e020d01',[39m
+[31m  level: 'error',[39m
+[31m  timestamp: '2024-11-29T05:26:28.919Z'[39m
+[31m}[39m

@@ -121,7 +121,23 @@ const updateProduct = async (req: Request, res: Response) => {
 
 const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const result = await deleteProductService(req.params.id);
+    if (!req.user) {
+      logger.warn("Unauthorized access to products");
+      return res
+        .status(401)
+        .json({ message: "Unauthorized access", data: null, success: false });
+    }
+
+    const result = await deleteProductService(req.params.id, req.user._id);
+
+    if (result instanceof Error) {
+      logger.error(`Product delete failed: ${result.message}`);
+      return res.status(500).send({
+        message: "Product is already exists in invoice",
+        success: false,
+        data: null,
+      });
+    }
 
     logger.info(`Product deleted: ${result?.name}`);
     res.status(200).json({

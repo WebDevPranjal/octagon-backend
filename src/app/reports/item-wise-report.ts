@@ -9,10 +9,19 @@ type Product = {
 
 export const itemWiseReport = async (req: Request, res: Response) => {
   try {
+    const userId = req?.user?._id;
+
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized", data: null, success: false });
+    }
+
     const { startDate, endDate, type } = req.body;
     const requriredInvoice = await Invoice.find({
       invoiceDate: { $gte: startDate, $lte: endDate },
       type: type,
+      user: userId,
     });
 
     // -> Filter the products from the invoices
@@ -42,9 +51,15 @@ export const itemWiseReport = async (req: Request, res: Response) => {
       }
     }
 
-    return res.status(200).json(products);
+    return res.status(200).json({
+      data: products,
+      success: true,
+      message: "Item wise report generated successfully",
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", data: null, success: false });
   }
 };

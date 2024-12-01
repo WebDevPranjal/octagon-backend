@@ -147,9 +147,11 @@ const getAllInvoicesService = async (userId: string) => {
         createdAt: invoice.createdAt,
         updatedAt: invoice.updatedAt,
         customerName: customerData.name,
-        customerMobile: customerData.phone,
+        customerStateCode: customerData?.stateCode || "",
+        customerAddress: customerData?.address || "",
+        customerMobile: customerData?.phone || "",
         customerDl: customerData.dlNumber,
-        customerGst: customerData.gstIN,
+        customerGst: customerData?.gstIN || "",
         customerId: invoice.customerId,
         itemsData,
       });
@@ -218,9 +220,11 @@ const getInvoiceByIdService = async (id: string) => {
       createdAt: invoice.createdAt,
       updatedAt: invoice.updatedAt,
       customerName: customerData.name,
-      customerMobile: customerData.phone,
+      customerMobile: customerData?.phone || "",
       customerDl: customerData.dlNumber,
-      customerGst: customerData.gstIN,
+      customerGst: customerData?.gstIN || "",
+      customerAddress: customerData?.address || "",
+      customerStateCode: customerData?.stateCode || "",
       customerId: invoice.customerId,
       items: itemsData,
     };
@@ -274,8 +278,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
       const { productId, batch, free, quantity } = item;
 
       if (type === "sale" && batch) {
-        console.log("iam reahing here");
-        console.log(productId, batch, free, quantity);
+        //console.log(productId, batch, free, quantity);
         await updateStockOnSale(productId, batch, free, quantity, session);
         const batchId = new mongoose.Types.ObjectId(batch);
         const productData = {
@@ -324,7 +327,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
             item.batchId = batchId;
           }
         } catch (error) {
-          console.log(error);
+         // console.log(error);
           throw new Error("Error while creating batch");
         }
       }
@@ -337,7 +340,7 @@ const updateInvoiceService = async (id: string, data: InvoiceType) => {
 
     invoice.items = new mongoose.Types.DocumentArray(products);
 
-    console.log("iam reahing here");
+    //console.log("iam reahing here");
 
     const updatedInvoice = await invoice.save({ session });
     await session.commitTransaction();

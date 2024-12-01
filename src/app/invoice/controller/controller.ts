@@ -167,10 +167,203 @@ const deleteInvoice = async (req: Request, res: Response) => {
   }
 };
 
+const currentMonthInvoices = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      logger.warn("Unauthorized access to invoices");
+      return res
+        .status(401)
+        .json({ message: "Unauthorized", data: null, success: false });
+    }
+
+    const userId = req.user._id;
+    const invoices = await getAllInvoicesService(userId);
+
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    if (invoices) {
+      const currentMonthSalesInvoices = invoices.filter((invoice) => {
+        const invoiceMonth = new Date(invoice.invoiceDate).getMonth();
+        const invoiceYear = new Date(invoice.invoiceDate).getFullYear();
+        return (
+          invoiceMonth === currentMonth &&
+          invoiceYear === currentYear &&
+          invoice.type === "sale"
+        );
+      });
+
+      const currentMonthPurchaseInvoices = invoices.filter((invoice) => {
+        const invoiceMonth = new Date(invoice.invoiceDate).getMonth();
+        const invoiceYear = new Date(invoice.invoiceDate).getFullYear();
+        return (
+          invoiceMonth === currentMonth &&
+          invoiceYear === currentYear &&
+          invoice.type === "purchase"
+        );
+      });
+
+      logger.info(`Current Month invoices fetched for user: ${userId}`);
+
+      res.status(200).json({
+        message: "Invoices fetched successfully",
+        data: {
+          sales: currentMonthSalesInvoices,
+          purchase: currentMonthPurchaseInvoices,
+        },
+        success: true,
+      });
+    }
+  } catch (error: any) {
+    logger.error(`Current Month invoice fetch failed: ${error.message}`);
+    res.status(500).json({
+      message: "Current month invoice Fetch failed",
+      success: false,
+      data: null,
+    });
+  }
+};
+
+const customerWiseInvoices = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      logger.warn("Unauthorized access to invoices");
+      return res
+        .status(401)
+        .json({ message: "Unauthorized", data: null, success: false });
+    }
+
+    const userId = req.user._id;
+    const invoices = await getAllInvoicesService(userId);
+
+    if (invoices && invoices.length > 0) {
+      const customerInvoiceMap = new Map();
+
+      invoices.forEach((invoice) => {
+        const { customerId, customerName } = invoice;
+
+        const idStr = customerId.toString();
+
+        if (customerInvoiceMap.has(idStr)) {
+          const customerData = customerInvoiceMap.get(idStr);
+          customerInvoiceMap.set(idStr, {
+            customerName: customerData.customerName,
+            invoiceCount: customerData.invoiceCount + 1,
+          });
+        } else {
+          customerInvoiceMap.set(idStr, {
+            customerName: customerName,
+            invoiceCount: 1,
+          });
+        }
+      });
+
+      const customerWiseInvoices = Array.from(
+        customerInvoiceMap,
+        ([customerId, customerData]) => ({
+          customerId,
+          customerName: customerData.customerName,
+          invoiceCount: customerData.invoiceCount,
+        })
+      );
+
+      logger.info(`Customer-wise invoices fetched for user: ${userId}`);
+
+      return res.status(200).json({
+        message: "Invoices fetched successfully",
+        data: customerWiseInvoices,
+        success: true,
+      });
+    } else {
+      return res.status(404).json({
+        message: "No invoices found",
+        data: null,
+        success: false,
+      });
+    }
+  } catch (error: any) {
+    logger.error(`Customer-wise invoice fetch failed: ${error.message}`);
+    return res.status(500).json({
+      message: "Customer-wise invoice fetch failed",
+      success: false,
+      data: null,
+    });
+  }
+};
+
+const monthWiseInvoices = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      logger.warn("Unauthorized access to invoices");
+      return res
+        .status(401)
+        .json({ message: "Unauthorized", data: null, success: false });
+    }
+
+    const userId = req.user._id;
+    const invoices = await getAllInvoicesService(userId);
+
+    if (invoices && invoices.length > 0) {
+      const monthInvoiceMap = new Map();
+
+      invoices.forEach((invoice) => {
+        const invoiceDate = new Date(invoice.invoiceDate);
+        // this
+        const monthYear = `${invoiceDate.getMonth()}`;
+
+        if (monthInvoiceMap.has(monthYear)) {
+          const monthData = monthInvoiceMap.get(monthYear);
+          monthInvoiceMap.set(monthYear, {
+            monthYear,
+            invoiceCount: monthData.invoiceCount + 1,
+          });
+        } else {
+          monthInvoiceMap.set(monthYear, {
+            monthYear,
+            invoiceCount: 1,
+          });
+        }
+      });
+
+      const monthWiseInvoices = Array.from(
+        monthInvoiceMap,
+        ([monthYear, monthData]) => ({
+          monthYear,
+          invoiceCount: monthData.invoiceCount,
+        })
+      );
+
+      logger.info(`Month-wise invoices fetched for user: ${userId}`);
+
+      return res.status(200).json({
+        message: "Invoices fetched successfully",
+        data: monthWiseInvoices,
+        success: true,
+      });
+    } else {
+      return res.status(404).json({
+        message: "No invoices found",
+        data: null,
+        success: false,
+      });
+    }
+  } catch (error: any) {
+    logger.error(`Month-wise invoice fetch failed: ${error.message}`);
+    return res.status(500).json({
+      message: "Month-wise invoice fetch failed",
+      success: false,
+      data: null,
+    });
+  }
+};
+
 export {
   createInvoice,
   getAllInvoices,
   getInvoiceById,
   updateInvoice,
   deleteInvoice,
+  currentMonthInvoices,
+  customerWiseInvoices,
+  monthWiseInvoices,
 };

@@ -1,6 +1,7 @@
 import { ClientSession } from "mongoose";
 import { BatchType, ProductType } from "../../../types/product.js";
 import Product from "../modals/schema.js";
+import Invoice from "../../invoice/modals/schema.js";
 
 const createProductService = async (product: ProductType) => {
   const name = product.name;
@@ -34,27 +35,42 @@ const getAllProductsService = async (userId: string) => {
   }
 };
 
-const updateProductService = (id: string, product: ProductType) => {
+const updateProductService = async (id: string, product: ProductType) => {
   try {
-    const existingProduct = Product.findById(id);
+    const existingProduct = await Product.findById(id);
     if (!existingProduct) {
       return -1;
     }
     const data = { ...product, updatedAt: new Date() };
-    const updatedProduct = Product.findByIdAndUpdate(id, data, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(id, data, {
+      new: true,
+    });
     return updatedProduct;
   } catch (error) {
     throw error;
   }
 };
 
-const deleteProductService = (id: string) => {
+const deleteProductService = async (id: string, userId: string) => {
   try {
-    const existingProduct = Product.findById(id);
+    const existingProduct = await Product.findById(id);
     if (!existingProduct) {
       return new Error("Product not found");
     }
-    const deletedProduct = Product.findByIdAndDelete(id);
+    console.log("Product found");
+    const userInvoices = await Invoice.find({ user: userId });
+    const items = userInvoices.flatMap((invoice) => invoice.items);
+    console.log("Items found");
+
+    const productExists = items.some(
+      (item) => item.productId.toString() === id
+    );
+
+    if (productExists) {
+      return new Error("Product is associated with an invoice");
+    }
+
+    const deletedProduct = await Product.findByIdAndDelete(id);
     return deletedProduct;
   } catch (error) {
     throw error;

@@ -5,8 +5,13 @@ import User from "../users/modals/modal.js";
 
 export const userAuth = async (req: Request, res: Response, next: any) => {
   try {
-    // console.log(req);
-    const token = req.headers.authorization?.split(" ")[1];
+    const token: string;
+
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    } else {
+      token = req.headers.cookie.split(";")[0].split("=")[1];
+    }
 
     if (!token) {
       return res.status(401).json({ msg: "Token is not provided" });
