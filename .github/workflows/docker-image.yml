@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: docker build -t octagon-backend:latest .
+        run: sudo docker build -t octagon-backend:latest .
 
       - name: Deploy Application
         run: |
-          docker stop octagon-backend || true
-          docker rm octagon-backend || true
-          docker run -d --rm --name octagon-backend -p 8080:8080 octagon-backend:latest
+          sudo docker stop octagon-backend || true
+          sudo docker rm octagon-backend || true
+          sudo docker run -d --rm --name octagon-backend -p 8080:8080 octagon-backend:latest
